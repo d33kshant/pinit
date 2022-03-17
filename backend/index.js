@@ -20,7 +20,7 @@ app.post('/signup', async (req, res) => {
 		if (username && email && password) {
 
 			const hash = await bcrypt.hash(password, 10)
-	
+
 			const query_result = await pool.query(
 				'INSERT INTO "user" (email, username, first_name, last_name, password) VALUES ($1, $2, $3, $4, $5);',
 				[email, username, first_name, last_name, hash]
@@ -37,10 +37,21 @@ app.post('/signup', async (req, res) => {
 			})
 		}
 	} catch (error) {
-		res.json({
-			code: 500,
-			message: "Something went wrong."
-		})
+		switch(error.code) {
+			case "23505":
+				res.json({
+					code: 400,
+					message: "Email or Username already exist."
+				})
+				break;
+			
+			default:
+				res.json({
+					code: 500,
+					message: "Something went wrong.",
+					payload: error
+				})
+		}
 	}
 })
 
