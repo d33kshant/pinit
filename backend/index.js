@@ -1,5 +1,6 @@
 require('dotenv').config()
 const express = require('express')
+const bcrypt = require('bcrypt')
 const cors = require('cors')
 const pool = require('./db')
 
@@ -9,9 +10,38 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
-app.get('/', async (req, res) => {
-	const result = await pool.query("SELECT * FROM \"user\";")
-	res.json(result.rows)
+app.post('/signup', async (req, res) => {
+	const { username, email, password } = req.body
+
+	const first_name = req.body.first_name || ''
+	const last_name = req.body.last_name || ''
+
+	try {
+		if (username && email && password) {
+
+			const hash = await bcrypt.hash(password, 10)
+	
+			const query_result = await pool.query(
+				'INSERT INTO "user" (email, username, first_name, last_name, password) VALUES ($1, $2, $3, $4, $5);',
+				[email, username, first_name, last_name, hash]
+			)
+			
+			res.json({
+				code: 200,
+				message: "User registered successfully."
+			})
+		} else {
+			res.json({
+				code: 400,
+				message: "Required fields can not be empty."
+			})
+		}
+	} catch (error) {
+		res.json({
+			code: 500,
+			message: "Something went wrong."
+		})
+	}
 })
 
 pool.connect().then(res=>{
