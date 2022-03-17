@@ -5,6 +5,9 @@
   "main": "index.js",
   "author": "Deekshant Yadav <d33kshant@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "dev": "nodemon index"
+  },
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
