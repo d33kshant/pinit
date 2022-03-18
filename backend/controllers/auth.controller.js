@@ -4,6 +4,26 @@ const pool = require('../db')
 
 const SECRET = process.env.SECRET
 
+const verify = (req, res, next) => {
+	const authHeader = req.headers['authorization']
+	if (authHeader) {
+		const token = authHeader.split(' ')[1]
+		const user = jwt.verify(token, SECRET)
+		if (user) {
+			req.user = user
+			next()
+		} else {
+			res.json({
+				error: "Auth token expired."
+			})
+		}
+	} else {
+		return res.json({
+			error: "Missing auth header."
+		})
+	}
+}
+
 const signup = async (req, res) => {
 	const { username, email, password } = req.body
 
@@ -49,7 +69,7 @@ const signin = async (req, res) => {
 	try {
 		if (username && password) {
 			const query_result = await pool.query(
-				'SELECT email, username, password FROM "user" WHERE username=$1;',
+				'SELECT id, email, username, password FROM "user" WHERE username=$1;',
 				[username]
 			)
 
@@ -90,4 +110,4 @@ const signin = async (req, res) => {
 }
 
 
-module.exports = { signup, signin }
+module.exports = { signup, signin, verify }
