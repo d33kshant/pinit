@@ -83,6 +83,8 @@ const getPins = async (req, res) => {
 	const page = req.query.page || 1
 	const limit = req.query.limit || 10
 
+	const search = req.query.search
+
 	if (page <= 0 || limit <= 0) {
 		return res.json({
 			error: "Invalid page or limit."
@@ -92,9 +94,12 @@ const getPins = async (req, res) => {
 	const offset = (page-1) * limit
 	
 	try {
+
+		const query = (search) ? `(${search.replaceAll(' ', '|')})` : ''
+
 		const query_result = await pool.query(
-			'SELECT pin.id AS pid, title, link, username as author, created_on FROM "user" INNER JOIN pin ON "user".id=pin.author ORDER BY created_on DESC LIMIT $1 OFFSET $2;',
-			[limit, offset]
+			'SELECT pin.id AS pid, title, link, username as author, created_on FROM "user" INNER JOIN pin ON "user".id=pin.author WHERE title ~* $1 ORDER BY created_on DESC LIMIT $2 OFFSET $3;',
+			[ query, limit, offset]
 		)
 		res.json(query_result.rows)
 	} catch (error) {
