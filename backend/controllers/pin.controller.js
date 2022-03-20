@@ -44,7 +44,6 @@ const create = async (req, res) => {
  */
 const getPinById = async (req, res) => {
 	const { id } = req.params
-	console.log(req.params)
 
 	try {
 		const pid = parseInt(id)
@@ -63,13 +62,12 @@ const getPinById = async (req, res) => {
 			}
 		} else {
 			res.json({
-				error: "Missing pin id."
+				error: "Invalid pin id."
 			})
 		}
 	} catch (error) {
 		res.json({
-			error: "Something went wrong.",
-			payload: error
+			error: "Something went wrong."
 		})
 	}
 }
