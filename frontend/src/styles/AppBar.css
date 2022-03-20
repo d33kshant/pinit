@@ -1,0 +1,66 @@
+.appbar-container {
+	width: 100%;
+	box-sizing: border-box;
+	padding: 16px;
+	display: flex;
+	gap: 16px;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.appbar-logo {
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+	background: #f44;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	overflow: hidden;
+	color: white;
+}
+
+.appbar-search {
+	background: #efefef;
+	border-radius: 32px;
+	height: 32px;
+	flex: 1;
+	display: flex;
+	align-items: center;
+}
+
+.appbar-account {
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+	background: #aaa;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	overflow: hidden;
+}
+
+.search-input {
+	flex: 1;
+	background: none;
+	border: none;
+	outline: none;
+	font-family: inherit;
+	padding: 0 16px;
+}
+
+.search-button {
+	border: none;
+	background: none;
+	height: 32px;
+	width: 36px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+	border-radius: 32px;
+}
+
+.search-button:hover {
+	background: rgba(0, 0, 0, 0.16);
+}
