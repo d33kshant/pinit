@@ -1,0 +1,19 @@
+CREATE DATABASE pinit;
+
+CREATE TABLE "user" (
+	id BIGSERIAL PRIMARY KEY,
+	email VARCHAR(255) UNIQUE NOT NULL,
+	username VARCHAR(255) UNIQUE NOT NULL,
+	first_name VARCHAR(255),
+	last_name VARCHAR(255),
+	password TEXT NOT NULL,
+	joined TIMESTAMP DEFAULT Now()
+);
+
+CREATE TABLE pin (
+	id BIGSERIAL PRIMARY KEY,
+	title TEXT NOT NULL,
+	author BIGINT NOT NULL,
+	link TEXT NOT NULL,
+	created_on TIMESTAMP DEFAULT Now()
+);
